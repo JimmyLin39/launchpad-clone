@@ -1,5 +1,5 @@
 import React from 'react'
-import { lighten, makeStyles, withStyles } from '@material-ui/core/styles'
+import { lighten, withStyles } from '@material-ui/core/styles'
 import LinearProgress from '@material-ui/core/LinearProgress'
 
 const BorderLinearProgress = withStyles({
