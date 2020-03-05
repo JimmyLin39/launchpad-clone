@@ -15,7 +15,7 @@ export default function Application(props) {
     <ThemeProvider theme={theme}>
       <main>
         <Typography variant='h2' component='h2'>
-          Launch Pad
+          Launch Pad Clone
         </Typography>
         <section>
           <Products />
