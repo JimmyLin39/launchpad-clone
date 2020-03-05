@@ -3,21 +3,25 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
-import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
+import LinearProgress from '../UI/LinearProgress'
 
 import useProductsData from '../hooks/useProductsData'
 
 const useStyles = makeStyles({
   root: {
-    textAlign: 'center',
     maxWidth: 345,
     flexGrow: 1
+  },
+  button: {
+    display: 'block',
+    width: '100%',
+    marginTop: 10
   }
 })
 const loader = (
@@ -73,13 +77,18 @@ export default function Products() {
                   <Typography gutterBottom variant='subtitle1' component='h3'>
                     {product.name}
                   </Typography>
+                  {product.totalWants} Boosts
+                  <LinearProgress value={product.totalWants / 100} />
+                  <Button
+                    className={classes.button}
+                    size='small'
+                    variant='outlined'
+                    color='primary'
+                  >
+                    BOOST IT
+                  </Button>
                 </CardContent>
               </CardActionArea>
-              <CardActions>
-                <Button size='small' variant='outlined' color='primary'>
-                  BOOST IT
-                </Button>
-              </CardActions>
             </Card>
           </Grid>
         ))}
