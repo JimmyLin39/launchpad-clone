@@ -13,9 +13,6 @@ export default function useProductsData(limit) {
       .then(res => res.json())
       .then(res => {
         setErrorMsg(null)
-        if (products.length) {
-          throw new Error('error')
-        }
         setTotalCount(res.totalCount)
         setProducts(products => products.concat(res.products))
         setloadMoreLoading(false)
