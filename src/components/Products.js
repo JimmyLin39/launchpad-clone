@@ -41,6 +41,7 @@ export default function Products() {
     products,
     totalCount,
     offset,
+    errorMsg,
     loadMoreLoading,
     handleLoadMore
   } = useProductsData(limit)
@@ -72,6 +73,13 @@ export default function Products() {
     }
   }
   if (!products.length) {
+    if (errorMsg) {
+      return (
+        <Typography variant='h6' component='h6' color='primary'>
+          {errorMsg}
+        </Typography>
+      )
+    }
     return loader
   }
   return (
@@ -129,6 +137,17 @@ export default function Products() {
             </Card>
           </Grid>
         ))}
+
+        <Grid container direction='row' justify='center'>
+          <Typography
+            variant='h6'
+            component='h6'
+            color='primary'
+            align='center'
+          >
+            {errorMsg}
+          </Typography>
+        </Grid>
         {loadMore()}
       </Grid>
     </div>
