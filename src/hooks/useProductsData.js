@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export default function useProductsData() {
-  const limit = 24
+export default function useProductsData(limit) {
   const [products, setProducts] = useState([])
   const [totalCount, setTotalCount] = useState(0)
   const [offset, setOffset] = useState(0)
@@ -12,7 +11,6 @@ export default function useProductsData() {
     )
       .then(res => res.json())
       .then(res => {
-        console.log(res)
         setTotalCount(res.totalCount)
         setProducts(products => products.concat(res.products))
         setloadMoreLoading(false)
@@ -26,5 +24,5 @@ export default function useProductsData() {
     setloadMoreLoading(true)
     setOffset(offset => offset + limit)
   }
-  return { products, totalCount, loadMoreLoading, handleLoadMore }
+  return { products, totalCount, offset, loadMoreLoading, handleLoadMore }
 }
