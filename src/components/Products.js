@@ -2,7 +2,6 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
-import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -18,6 +17,9 @@ const useStyles = makeStyles({
     maxWidth: 345,
     flexGrow: 1
   },
+  productTitle: {
+    height: 56
+  },
   button: {
     display: 'block',
     width: '100%',
@@ -31,14 +33,44 @@ const loader = (
     </div>
   </Grid>
 )
+
 export default function Products() {
+  // products per load
+  const limit = 24
   const {
     products,
     totalCount,
+    offset,
     loadMoreLoading,
     handleLoadMore
-  } = useProductsData()
+  } = useProductsData(limit)
   const classes = useStyles()
+
+  const loadMore = () => {
+    // load more loading icon
+    if (loadMoreLoading) {
+      return loader
+      // reach last page
+    } else if (offset + limit > totalCount) {
+      return null
+      // load more button
+    } else {
+      return (
+        <Grid container direction='row' justify='center'>
+          <div style={{ margin: 20 }}>
+            <Button
+              size='small'
+              variant='outlined'
+              color='primary'
+              onClick={handleLoadMore}
+            >
+              Load More
+            </Button>
+          </div>
+        </Grid>
+      )
+    }
+  }
   if (!products.length) {
     return loader
   }
@@ -62,52 +94,42 @@ export default function Products() {
         {products.map(product => (
           <Grid key={product.id} item xs={12} sm={6} md={3}>
             <Card className={classes.root}>
-              <CardActionArea>
-                <CardMedia
-                  component='img'
-                  alt={product.name}
-                  height='250'
-                  image={product.featuredImage}
-                  title={product.name}
-                />
-                <CardContent>
-                  <Typography variant='subtitle2' component='h4'>
-                    {product.companyName}
-                  </Typography>
-                  <Typography gutterBottom variant='subtitle1' component='h3'>
-                    {product.name}
-                  </Typography>
+              <CardMedia
+                component='img'
+                alt={product.name}
+                height='250'
+                image={product.featuredImage}
+                title={product.name}
+              />
+              <CardContent>
+                <Typography variant='subtitle2' component='h4'>
+                  {product.companyName}
+                </Typography>
+                <Typography
+                  className={classes.productTitle}
+                  gutterBottom
+                  variant='subtitle1'
+                  component='h3'
+                >
+                  {product.name}
+                </Typography>
+                <Typography vatiant='body1' component='p'>
                   {product.totalWants} Boosts
-                  <LinearProgress value={product.totalWants / 100} />
-                  <Button
-                    className={classes.button}
-                    size='small'
-                    variant='outlined'
-                    color='primary'
-                  >
-                    BOOST IT
-                  </Button>
-                </CardContent>
-              </CardActionArea>
+                </Typography>
+                <LinearProgress value={product.totalWants / 100} />
+                <Button
+                  className={classes.button}
+                  size='small'
+                  variant='outlined'
+                  color='primary'
+                >
+                  BOOST IT
+                </Button>
+              </CardContent>
             </Card>
           </Grid>
         ))}
-        {loadMoreLoading ? (
-          loader
-        ) : (
-          <Grid container direction='row' justify='center'>
-            <div style={{ margin: 20 }}>
-              <Button
-                size='small'
-                variant='outlined'
-                color='primary'
-                onClick={handleLoadMore}
-              >
-                Load More
-              </Button>
-            </div>
-          </Grid>
-        )}
+        {loadMore()}
       </Grid>
     </div>
   )
